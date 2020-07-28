@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace eCodeShop.Core.Entities
+namespace eCodeShop.Core.Domain
 {
     public class User
     {

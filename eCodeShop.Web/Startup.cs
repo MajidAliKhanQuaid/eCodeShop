@@ -15,12 +15,14 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using eShopCore.Infrastructure;
 using System.Reflection;
+using eCodeShop.Core.Data;
 
 namespace eCodeShop.Web
 {
     public class Startup
     {
         private readonly IConfiguration _configuration;
+        
         public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -37,22 +39,25 @@ namespace eCodeShop.Web
             });
 
             var jwtConfig = _configuration.GetSection("Jwt");
-            //services.AddControllersWithViews();
+            
+            // Injections
+            services.AddScoped<DbContext, ECodeShopContext>();
+            services.AddScoped(typeof(IRepository<>), typeof(ECodeShopRepository<>));
 
-            //// add it to the 'ConfigureServices' method of the Startup.cs
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //    .AddJwtBearer(options =>
-            //    {
-            //        options.TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            ValidateIssuer = true,
-            //            ValidateAudience = false,
-            //            ValidateLifetime = true,
-            //            ValidIssuer = jwtConfig.GetValue<string>("IssuerName"),
-            //            ValidateIssuerSigningKey = true,
-            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.GetValue<string>("SecretKey")))
-            //        };
-            //    });
+            // add it to the 'ConfigureServices' method of the Startup.cs
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidIssuer = jwtConfig.GetValue<string>("IssuerName"),
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.GetValue<string>("SecretKey")))
+                    };
+                });
 
             services.AddDbContext<ECodeShopContext>(options =>
                     options.UseSqlServer(_configuration.GetConnectionString("Default")));
@@ -68,8 +73,8 @@ namespace eCodeShop.Web
 
             app.UseRouting();
 
-            //app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

@@ -22,4 +22,8 @@
     <ProjectReference Include="..\eCodeShop.Api\eCodeShop.Api.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ecode-shop-angular\src\app\components\" />
+  </ItemGroup>
+
 </Project>

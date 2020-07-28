@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthServiceService } from './../../auth-service.service';
+import { AuthService } from './../../services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import {
   FormBuilder,
@@ -7,6 +7,7 @@ import {
   Validators,
   FormControl,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'login',
@@ -16,7 +17,7 @@ import {
 })
 export class LoginComponent implements OnInit {
   formGroup: FormGroup;
-  constructor(private authService: AuthServiceService) {}
+  constructor(private authService: AuthService, private router:Router) {}
   initForm() {
     this.formGroup = new FormGroup({
       email: new FormControl('', [Validators.required]),
@@ -27,9 +28,16 @@ export class LoginComponent implements OnInit {
     this.initForm();
   }
   loginProcess() {
+    console.log("Requesting to submit form");
     if (this.formGroup.valid) {
       this.authService.logIn(this.formGroup.value).subscribe((result) => {
+        console.log("Auth Service | SUCCESS");
         console.log(result);
+        localStorage.setItem("token", result.token);
+        this.router.navigate(['']);
+      }, (error) => {
+        console.log("Auth Service | FAILURE");
+        console.log(error);
       });
     }
   }
