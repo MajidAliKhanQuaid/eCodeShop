@@ -1,4 +1,4 @@
-﻿using eCodeShop.Core.Domain;
+﻿using eCodeShop.Core.Entities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

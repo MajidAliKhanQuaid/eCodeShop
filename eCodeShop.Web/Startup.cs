@@ -15,7 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using eShopCore.Infrastructure;
 using System.Reflection;
-using eCodeShop.Core.Data;
+using eCodeShop.Core.Interfaces;
 
 namespace eCodeShop.Web
 {

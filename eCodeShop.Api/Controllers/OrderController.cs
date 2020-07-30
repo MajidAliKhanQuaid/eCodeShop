@@ -1,12 +1,11 @@
-﻿using eCodeShop.Core.Data;
-using eCodeShop.Core.Domain;
-using eCodeShop.Core.Dtos;
+﻿using eCodeShop.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using eCodeShop.Core.Entities;
 
 namespace eCodeShop.Api.Controllers
 {
@@ -26,9 +25,9 @@ namespace eCodeShop.Api.Controllers
         }
 
         [HttpPost("placeOrder")]
-        public Order SaveOrder(OrderModel orderModel)
+        public Order SaveOrder(Order order)
         {
-            Order order = null;
+            _ordersRepo.Insert(order);
             return null;
         }
     }

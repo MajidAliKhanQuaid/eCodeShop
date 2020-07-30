@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace eCodeShop.Core.Domain
+namespace eCodeShop.Core.Entities
 {
-    public class OrderItem
+    public class OrderItem : BaseEntity
     {
-        public int Id { get; set; }
         public int ProductId { get; set; }
         public virtual Product Product { get; set; }
         public int OrderId { get; set; }

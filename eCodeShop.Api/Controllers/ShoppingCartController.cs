@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using eCodeShop.Core.Data;
-using eCodeShop.Core.Domain;
-using eCodeShop.Core.Dtos;
+using eCodeShop.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using eCodeShop.Core.Entities;
+using eCodeShop.Core.Models;
 
 namespace eCodeShop.Api.Controllers
 {

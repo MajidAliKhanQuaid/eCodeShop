@@ -1,6 +1,4 @@
-﻿using eCodeShop.Core.Data;
-using eCodeShop.Core.Domain;
-using eCodeShop.Core.Dtos;
+﻿using eCodeShop.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +8,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using eCodeShop.Core.Entities;
+using eCodeShop.Core.Models;
 
 namespace eCodeShop.Api.Controllers
 {
@@ -37,7 +37,7 @@ namespace eCodeShop.Api.Controllers
         }
 
         [HttpPost("save")]
-        public Product SaveProduct([FromForm][FromBody] ProductModel productModel)
+        public Product SaveProduct([FromForm] ProductModel productModel)
         {
             Product product = null;
             if (productModel.Id > 0)

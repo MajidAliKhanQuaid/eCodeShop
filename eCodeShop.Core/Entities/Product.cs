@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace eCodeShop.Core.Domain
+namespace eCodeShop.Core.Entities
 {
-    public class Product
+    public class Product : BaseEntity
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string ImageUrl { get; set; }
         public string Description { get; set; }
