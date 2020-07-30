@@ -22,7 +22,7 @@ namespace eCodeShop.Web
     public class Startup
     {
         private readonly IConfiguration _configuration;
-        
+
         public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -33,13 +33,17 @@ namespace eCodeShop.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().AddApplicationPart(Assembly.Load(new AssemblyName("eCodeShop.Api")));
+            //services.AddSwaggerGen(c =>
+            //{
+
+            //});
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ecode-shop-angular/dist";
             });
 
             var jwtConfig = _configuration.GetSection("Jwt");
-            
+
             // Injections
             services.AddScoped<DbContext, ECodeShopContext>();
             services.AddScoped(typeof(IRepository<>), typeof(ECodeShopRepository<>));
@@ -50,7 +54,7 @@ namespace eCodeShop.Web
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuer = true,
+                        ValidateIssuer = false,
                         ValidateAudience = false,
                         ValidateLifetime = true,
                         ValidIssuer = jwtConfig.GetValue<string>("IssuerName"),
@@ -75,6 +79,16 @@ namespace eCodeShop.Web
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            //app.UseSwagger();
+            //// Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            //// specifying the Swagger JSON endpoint.
+            //app.UseSwaggerUI(c =>
+            //{
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            //});
+
 
             app.UseEndpoints(endpoints =>
             {

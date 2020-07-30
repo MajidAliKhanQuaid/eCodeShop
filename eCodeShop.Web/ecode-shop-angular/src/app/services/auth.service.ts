@@ -7,10 +7,10 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   logIn = (data): Observable<any> => {
-    return this.http.post(apiUrl + 'api/authentication/token', data);
+    return this.http.post(`${apiUrl}/authentication/token`, data);
   };
 
   isAuthenticated = (): Boolean => {

@@ -1,19 +1,26 @@
-<mat-card class="example-card">
+<mat-card class="product-mat-card">
   <mat-card-header>
     <div mat-card-avatar class="example-header-image"></div>
     <mat-card-title>{{ product.name }}</mat-card-title>
     <mat-card-subtitle>{{ product.price }}</mat-card-subtitle>
   </mat-card-header>
-  <img mat-card-image
-       src="{{ product.imageUrl }}"
-       alt="{{ product.name }}" />
-  <mat-card-content>
+  <img
+    mat-card-image
+    src="https://image.flaticon.com/icons/svg/2232/2232688.svg"
+  />
+  <mat-card-content fxLayout="row" fxLayoutAlign="center center">
     <p>
       {{ product.description }}
     </p>
   </mat-card-content>
-  <mat-card-actions>
-    <button mat-button>LIKE</button>
-    <button mat-button>SHARE</button>
+  <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
+    <button
+      mat-button
+      (click)="addToCart($event, product.id)"
+      mat-raised-button
+      color="primary"
+    >
+      Add to Cart
+    </button>
   </mat-card-actions>
 </mat-card>

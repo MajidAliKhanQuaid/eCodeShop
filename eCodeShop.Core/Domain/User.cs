@@ -11,6 +11,7 @@ namespace eCodeShop.Core.Domain
         public string UserName { get; set; }
         public string Password { get; set; }
         public string Phone { get; set; }
+        public string RefreshToken { get; set; }
         public DateTime CreatedOnUtc { get; set; }
         public DateTime UpdatedOnUtc { get; set; }
     }

@@ -20,6 +20,7 @@ namespace eShopCore.Infrastructure
         public ECodeShopRepository(DbContext context)
         {
             _context = context;
+            _entitySet = _context.Set<TEntity>();
         }
 
         #endregion
