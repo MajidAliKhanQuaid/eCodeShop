@@ -1,4 +1,4 @@
-﻿using eCodeShop.Core.Data;
+﻿using eCodeShop.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

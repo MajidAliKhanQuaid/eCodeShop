@@ -1,6 +1,4 @@
-﻿using eCodeShop.Core.Data;
-using eCodeShop.Core.Domain;
-using eCodeShop.Core.Dtos;
+﻿using eCodeShop.Core.Interfaces;
 using eShopCore.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +12,8 @@ using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
+using eCodeShop.Core.Entities;
+using eCodeShop.Core.Models;
 
 namespace eCodeShop.Api.Controllers
 {
@@ -39,14 +39,14 @@ namespace eCodeShop.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost(template: "token", Name = "tokenRequest")]
-        public UserTokenModel Token([FromBody] UserModel user)
+        public UserTokenModel Token([FromBody] User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var jwtConfig = _configuration.GetSection("jwt");
 
             string secretKey = jwtConfig.GetValue<string>("SecretKey");
             string issuerName = jwtConfig.GetValue<string>("IssuerName");
-            double tokenValidity = jwtConfig.GetValue<int>("Validity");
+            int tokenValidity = jwtConfig.GetValue<int>("Validity");
 
             // Validate User Here i.e.
             var vUser = _usersRepo.Table.Where(x => x.Email == user.Email && x.Password == user.Password).FirstOrDefault();
@@ -76,7 +76,7 @@ namespace eCodeShop.Api.Controllers
             Console.Write("############ - Request for Token");
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);
             string token = tokenHandler.WriteToken(securityToken);
-            return new UserTokenModel() { Email = user.Email, Token = token, Expiry = 500 };
+            return new UserTokenModel() { Email = user.Email, AccessToken = token, Expiry = tokenValidity };
         }
 
     }

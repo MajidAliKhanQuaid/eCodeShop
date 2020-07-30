@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace eCodeShop.Core.Data
+namespace eCodeShop.Core.Interfaces
 {
     public partial interface IRepository<TEntity> where TEntity : class
     {
