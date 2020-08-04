@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace eShopCore.Infrastructure
+namespace eShopCore.Infrastructure.Data
 {
     public class ECodeShopContext : DbContext
     {

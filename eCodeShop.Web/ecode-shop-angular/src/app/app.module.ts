@@ -18,12 +18,15 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HomeComponent } from './layouts/home/home.component';
 import { LogoutComponent } from './layouts/logout/logout.component';
-import { Tokeninterceptor } from './tokeninterceptor';
 import { ProductComponent } from './components/product/product.component';
 import { CreateorupdateComponent } from './layouts/admin/product/createorupdate/createorupdate.component';
 import { ListComponent } from './layouts/admin/product/list/list.component';
 import { CartComponent } from './components/cart/cart.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+
+
+import { TokenInterceptor } from './interceptors/token-interceptor';
+import { ErrorInterceptor } from './interceptors/error-interceptor'
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, HomeComponent, LogoutComponent, ProductComponent, CreateorupdateComponent, ListComponent, CartComponent, NavbarComponent],
@@ -46,8 +49,13 @@ import { NavbarComponent } from './components/navbar/navbar.component';
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: Tokeninterceptor,
+      useClass: TokenInterceptor,
       multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
     },
   ],
   bootstrap: [AppComponent],

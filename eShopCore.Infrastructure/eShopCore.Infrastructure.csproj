@@ -5,12 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200728175103_Added Product Entity.cs" />
-    <Compile Remove="Migrations\20200728175103_Added Product Entity.Designer.cs" />
-    <Compile Remove="Migrations\20200728194609_Added Shopping Entities.cs" />
-    <Compile Remove="Migrations\20200728194609_Added Shopping Entities.Designer.cs" />
-    <Compile Remove="Migrations\20200728194803_Added Shopping Entities.cs" />
-    <Compile Remove="Migrations\20200728194803_Added Shopping Entities.Designer.cs" />
+    <Compile Remove="Data\20200804051747_Added Entitites.cs" />
+    <Compile Remove="Data\20200804051747_Added Entitites.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +17,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eCodeShop.Core\eCodeShop.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>

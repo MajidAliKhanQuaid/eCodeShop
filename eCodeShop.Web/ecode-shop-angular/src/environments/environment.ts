@@ -6,8 +6,10 @@ export const environment = {
   production: false,
 };
 
-export const dummyUrl = 'https://reqres.in/api/users?page=2';
-export const apiUrl = 'https://localhost:5001/api'; //44396';
+export const API_URL: string = 'https://localhost:5001/api'; //44396';
+
+export const ACCESS_TOKEN: string = '';
+export const REFRESH_TOKEN: string = '';
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

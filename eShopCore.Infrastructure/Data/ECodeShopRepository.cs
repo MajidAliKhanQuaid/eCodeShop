@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace eShopCore.Infrastructure
+namespace eShopCore.Infrastructure.Data
 {
     public class ECodeShopRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {

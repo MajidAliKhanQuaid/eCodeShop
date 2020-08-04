@@ -1,4 +1,4 @@
-import { apiUrl } from './../../environments/environment';
+import { API_URL } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -10,7 +10,7 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   logIn = (data): Observable<any> => {
-    return this.http.post(`${apiUrl}/authentication/token`, data);
+    return this.http.post(`${API_URL}/authentication/token`, data);
   };
 
   isAuthenticated = (): Boolean => {

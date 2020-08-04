@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { apiUrl } from './../../../../../environments/environment';
+import { API_URL } from './../../../../../environments/environment';
 import {
   FormBuilder,
   FormGroup,
@@ -44,7 +44,7 @@ export class CreateorupdateComponent implements OnInit {
     formData.append("image", this.productImage);
     //
     console.log(formData.get("name"));
-    this.http.post(`${apiUrl}/product/save`, formData).subscribe((result) => {
+    this.http.post(`${API_URL}/product/save`, formData).subscribe((result) => {
       console.log("Product Save | SUCCESS");
       console.log(result);
       this.router.navigate(['']);

@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using eShopCore.Infrastructure;
 using System.Reflection;
 using eCodeShop.Core.Interfaces;
+using Microsoft.Net.Http.Headers;
+using eShopCore.Infrastructure.Data;
 
 namespace eCodeShop.Web
 {
@@ -43,6 +45,7 @@ namespace eCodeShop.Web
             });
 
             var jwtConfig = _configuration.GetSection("Jwt");
+            var corsPolicyName = _configuration.GetValue<string>("CorsPolicyName");
 
             // Injections
             services.AddScoped<DbContext, ECodeShopContext>();
@@ -65,15 +68,34 @@ namespace eCodeShop.Web
 
             services.AddDbContext<ECodeShopContext>(options =>
                     options.UseSqlServer(_configuration.GetConnectionString("Default")));
+
+            // add it to the 'ConfigureServices' method of the Startup.cs
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: corsPolicyName,
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin();
+                        builder.AllowAnyHeader();
+                        builder.WithHeaders(HeaderNames.ContentType);
+                        builder.WithMethods("PUT", "POST", "GET");
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var corsPolicyName = _configuration.GetValue<string>("CorsPolicyName");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(corsPolicyName);
+
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
 
             app.UseRouting();
 

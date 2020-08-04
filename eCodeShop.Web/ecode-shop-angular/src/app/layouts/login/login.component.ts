@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   formGroup: FormGroup;
-  constructor(private authService: AuthService, private router:Router) {}
+  constructor(private authService: AuthService, private router: Router) { }
   initForm() {
     this.formGroup = new FormGroup({
       email: new FormControl('', [Validators.required]),
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
       this.authService.logIn(this.formGroup.value).subscribe((result) => {
         console.log("Auth Service | SUCCESS");
         console.log(result);
-        localStorage.setItem("token", result.token);
+        localStorage.setItem("token", result.accessToken);
         this.router.navigate(['']);
       }, (error) => {
         console.log("Auth Service | FAILURE");

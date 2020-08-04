@@ -1,7 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CartItem } from './../model/cartItem';
-import { apiUrl } from './../../environments/environment';
+import { CartItem } from './../models/cartItem';
+import { API_URL } from './../../environments/environment';
 import { map, catchError } from "rxjs/operators";
 import { Observable } from 'rxjs';
 
@@ -20,7 +20,7 @@ export class ShoppingcartService implements OnInit {
   }
 
   getCartItems = (): Observable<CartItem[]> => {
-    return this.http.get(`${apiUrl}/shoppingcart/cartitems`).pipe(map(result => {
+    return this.http.get(`${API_URL}/shoppingcart/cartitems`).pipe(map(result => {
       return <CartItem[]>result
     }),
       catchError(err => {

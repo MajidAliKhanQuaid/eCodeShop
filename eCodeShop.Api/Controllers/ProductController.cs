@@ -81,11 +81,11 @@ namespace eCodeShop.Api.Controllers
             //
             try
             {
-                if (!Directory.Exists(_hostingEnv.WebRootPath + "\\uploads\\"))
+                if (!Directory.Exists(_hostingEnv.ContentRootPath + "\\uploads\\"))
                 {
-                    Directory.CreateDirectory(_hostingEnv.WebRootPath + "\\uploads\\");
+                    Directory.CreateDirectory(_hostingEnv.ContentRootPath + "\\uploads\\");
                 }
-                string savePath = _hostingEnv.WebRootPath + "\\uploads\\" + productModel.Image.FileName;
+                string savePath = _hostingEnv.ContentRootPath + "\\uploads\\" + productModel.Image.FileName;
                 using (FileStream filestream = System.IO.File.Create(savePath))
                 {
                     productModel.Image.CopyTo(filestream);

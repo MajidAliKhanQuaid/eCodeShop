@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eShopCore.Infrastructure;
 
-namespace eShopCore.Infrastructure.Migrations
+namespace eShopCore.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ECodeShopContext))]
-    [Migration("20200728194923_Added Shopping Entities")]
-    partial class AddedShoppingEntities
+    [Migration("20200804051833_Added Entitites")]
+    partial class AddedEntitites
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace eShopCore.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("eCodeShop.Core.Domain.Order", b =>
+            modelBuilder.Entity("eCodeShop.Core.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -47,7 +47,7 @@ namespace eShopCore.Infrastructure.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("eCodeShop.Core.Domain.OrderItem", b =>
+            modelBuilder.Entity("eCodeShop.Core.Entities.OrderItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -78,7 +78,7 @@ namespace eShopCore.Infrastructure.Migrations
                     b.ToTable("OrderItems");
                 });
 
-            modelBuilder.Entity("eCodeShop.Core.Domain.Product", b =>
+            modelBuilder.Entity("eCodeShop.Core.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -128,7 +128,7 @@ namespace eShopCore.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("eCodeShop.Core.Domain.ShoppingCartItem", b =>
+            modelBuilder.Entity("eCodeShop.Core.Entities.ShoppingCartItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -156,7 +156,7 @@ namespace eShopCore.Infrastructure.Migrations
                     b.ToTable("ShoppingCartItems");
                 });
 
-            modelBuilder.Entity("eCodeShop.Core.Domain.User", b =>
+            modelBuilder.Entity("eCodeShop.Core.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -192,48 +192,48 @@ namespace eShopCore.Infrastructure.Migrations
                         new
                         {
                             Id = -1,
-                            CreatedOnUtc = new DateTime(2020, 7, 28, 19, 49, 22, 586, DateTimeKind.Utc).AddTicks(624),
+                            CreatedOnUtc = new DateTime(2020, 8, 4, 5, 18, 33, 394, DateTimeKind.Utc).AddTicks(4206),
                             Email = "user@ds.com",
                             Password = "1234",
                             Phone = "0092 123 123",
-                            UpdatedOnUtc = new DateTime(2020, 7, 28, 19, 49, 22, 586, DateTimeKind.Utc).AddTicks(907),
+                            UpdatedOnUtc = new DateTime(2020, 8, 4, 5, 18, 33, 394, DateTimeKind.Utc).AddTicks(4754),
                             UserName = "ds"
                         });
                 });
 
-            modelBuilder.Entity("eCodeShop.Core.Domain.Order", b =>
+            modelBuilder.Entity("eCodeShop.Core.Entities.Order", b =>
                 {
-                    b.HasOne("eCodeShop.Core.Domain.User", "User")
+                    b.HasOne("eCodeShop.Core.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("eCodeShop.Core.Domain.OrderItem", b =>
+            modelBuilder.Entity("eCodeShop.Core.Entities.OrderItem", b =>
                 {
-                    b.HasOne("eCodeShop.Core.Domain.Order", "Order")
+                    b.HasOne("eCodeShop.Core.Entities.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("eCodeShop.Core.Domain.Product", "Product")
+                    b.HasOne("eCodeShop.Core.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("eCodeShop.Core.Domain.ShoppingCartItem", b =>
+            modelBuilder.Entity("eCodeShop.Core.Entities.ShoppingCartItem", b =>
                 {
-                    b.HasOne("eCodeShop.Core.Domain.Product", "Product")
+                    b.HasOne("eCodeShop.Core.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("eCodeShop.Core.Domain.User", "User")
+                    b.HasOne("eCodeShop.Core.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
