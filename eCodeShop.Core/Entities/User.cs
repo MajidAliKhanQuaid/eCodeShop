@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,6 +9,7 @@ namespace eCodeShop.Core.Entities
     {
         public string Email { get; set; }
         public string UserName { get; set; }
+        [JsonIgnore]
         public string Password { get; set; }
         public string Phone { get; set; }
         public string RefreshToken { get; set; }
