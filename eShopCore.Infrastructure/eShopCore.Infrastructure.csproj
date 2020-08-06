@@ -5,8 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Extensions\**" />
+    <EmbeddedResource Remove="Extensions\**" />
+    <None Remove="Extensions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Data\20200804051747_Added Entitites.cs" />
     <Compile Remove="Data\20200804051747_Added Entitites.Designer.cs" />
+    <Compile Remove="Data\20200805183519_added entities.cs" />
+    <Compile Remove="Data\20200805183519_added entities.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,10 +25,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eCodeShop.Core\eCodeShop.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>

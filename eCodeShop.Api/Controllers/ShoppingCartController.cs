@@ -10,6 +10,7 @@ using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using eCodeShop.Core.Entities;
 using eCodeShop.Core.Models;
+using eCodeShop.Core.Dtos;
 
 namespace eCodeShop.Api.Controllers
 {
@@ -41,26 +42,27 @@ namespace eCodeShop.Api.Controllers
             return Ok(_shoppingCartRepo.Table.Where(x => x.Id == id).ToList());
         }
 
+
         [HttpPost("addToCart")]
-        public ShoppingCartItem SaveCartItem(ShoppingCartItemModel _shoppingCartItem)
+        public ShoppingCartItem SaveCartItem([FromBody] ShoppingCartItemDto sCartItemDto)
         {
             ShoppingCartItem shoppingCartItem = null;
             if (shoppingCartItem.Id > 0)
             {
-                shoppingCartItem = _shoppingCartRepo.GetById(_shoppingCartItem.Id);
+                shoppingCartItem = _shoppingCartRepo.GetById(sCartItemDto.Id);
                 if (shoppingCartItem != null)
                 {
-                    shoppingCartItem.Quantity = _shoppingCartItem.Quantity;
-                    shoppingCartItem.UnitPrice = _shoppingCartItem.UnitPrice;
+                    shoppingCartItem.Quantity = sCartItemDto.Quantity;
+                    shoppingCartItem.UnitPrice = sCartItemDto.UnitPrice;
                     //
                     return shoppingCartItem;
                 }
             }
             //
             shoppingCartItem = new ShoppingCartItem();
-            shoppingCartItem.ProductId = _shoppingCartItem.ProductId;
-            shoppingCartItem.Quantity = _shoppingCartItem.Quantity;
-            shoppingCartItem.UnitPrice = _shoppingCartItem.UnitPrice;
+            shoppingCartItem.ProductId = sCartItemDto.ProductId;
+            shoppingCartItem.Quantity = sCartItemDto.Quantity;
+            shoppingCartItem.UnitPrice = sCartItemDto.UnitPrice;
             //
             _shoppingCartRepo.Insert(shoppingCartItem);
             //

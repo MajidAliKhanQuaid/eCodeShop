@@ -11,5 +11,6 @@ namespace eCodeShop.Core.Entities
         public decimal OrderTotal { get; set; }
         public DateTime CreatedOnUtc { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedOnUtc { get; set; } = DateTime.UtcNow;
+        public virtual List<OrderItem> OrderItems { get; set; }
     }
 }

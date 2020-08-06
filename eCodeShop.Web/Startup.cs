@@ -18,6 +18,8 @@ using System.Reflection;
 using eCodeShop.Core.Interfaces;
 using Microsoft.Net.Http.Headers;
 using eShopCore.Infrastructure.Data;
+using eCodeShop.Services.Interfaces;
+using eCodeShop.Services.Services;
 
 namespace eCodeShop.Web
 {
@@ -48,7 +50,12 @@ namespace eCodeShop.Web
             var corsPolicyName = _configuration.GetValue<string>("CorsPolicyName");
 
             // Injections
-            services.AddScoped<DbContext, ECodeShopContext>();
+            //services.AddScoped<DbContext, ECodeShopContext>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IPictureService, PictureService>();
+            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped(typeof(IRepository<>), typeof(ECodeShopRepository<>));
 
             // add it to the 'ConfigureServices' method of the Startup.cs

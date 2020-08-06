@@ -14,6 +14,8 @@ using System.Security.Claims;
 using System.Text;
 using eCodeShop.Core.Entities;
 using eCodeShop.Core.Models;
+using eCodeShop.Core.Dtos;
+using eCodeShop.Services.Interfaces;
 
 namespace eCodeShop.Api.Controllers
 {
@@ -22,11 +24,15 @@ namespace eCodeShop.Api.Controllers
     [Route("api/[controller]")]
     public class AuthenticationController : ControllerBase
     {
+        private ITokenService _tokenService;
+        private IUserService _userService;
         private IConfiguration _configuration;
         private IRepository<User> _usersRepo;
 
-        public AuthenticationController(IConfiguration configuration, IRepository<User> usersRepo)
+        public AuthenticationController(ITokenService tokenService, IUserService userService, IConfiguration configuration, IRepository<User> usersRepo)
         {
+            _tokenService = tokenService;
+            _userService = userService;
             _configuration = configuration;
             _usersRepo = usersRepo;
         }
@@ -39,44 +45,14 @@ namespace eCodeShop.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost(template: "token", Name = "tokenRequest")]
-        public UserTokenModel Token([FromBody] User user)
+        public IActionResult Token([FromBody] User user)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var jwtConfig = _configuration.GetSection("jwt");
-
-            string secretKey = jwtConfig.GetValue<string>("SecretKey");
-            string issuerName = jwtConfig.GetValue<string>("IssuerName");
-            int tokenValidity = jwtConfig.GetValue<int>("Validity");
-
-            // Validate User Here i.e.
-            var vUser = _usersRepo.Table.Where(x => x.Email == user.Email && x.Password == user.Password).FirstOrDefault();
-            if (vUser == null)
+            var tokenModel = _userService.Authenticate(user.Email, user.Password);
+            if (tokenModel == null)
             {
-                Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                return null;
-            };
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            List<Claim> claims = new List<Claim>();
-            claims.Add(new Claim("Id", vUser.Id.ToString()));
-            claims.Add(new Claim(ClaimTypes.Email, vUser.Email));
-            claims.Add(new Claim(ClaimTypes.Name, vUser.Email));
-            claims.Add(new Claim(ClaimTypes.NameIdentifier, vUser.Email));
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Issuer = issuerName,
-                Subject = claimsIdentity,
-                Expires = DateTime.UtcNow.AddMinutes(tokenValidity),
-                SigningCredentials = credentials
-            };
-
-            Console.Write("############ - Request for Token");
-            var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-            string token = tokenHandler.WriteToken(securityToken);
-            return new UserTokenModel() { Email = user.Email, AccessToken = token, Expiry = tokenValidity };
+                return new ForbidResult();
+            }
+            return Ok(tokenModel);
         }
 
     }

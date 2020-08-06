@@ -10,6 +10,9 @@ using System.Linq;
 using System.Text;
 using eCodeShop.Core.Entities;
 using eCodeShop.Core.Models;
+using eCodeShop.Services.Interfaces;
+using eCodeShop.Core.Dtos;
+using System.Threading.Tasks;
 
 namespace eCodeShop.Api.Controllers
 {
@@ -20,98 +23,83 @@ namespace eCodeShop.Api.Controllers
     public class ProductController : ControllerBase
     {
         private IConfiguration _configuration;
-        private IRepository<Product> _productsRepo;
+        private IProductService _productService;
+        private IPictureService _pictureService;
         private IHostingEnvironment _hostingEnv;
 
-        public ProductController(IConfiguration configuration, IRepository<Product> productsRepo, IHostingEnvironment hostingEnv)
+        public ProductController(IConfiguration configuration, IProductService productService, IPictureService pictureService, IHostingEnvironment hostingEnv)
         {
             _configuration = configuration;
-            _productsRepo = productsRepo;
+            _productService = productService;
+            _pictureService = pictureService;
             _hostingEnv = hostingEnv;
         }
 
         [HttpPost("find")]
         public Product FindProduct(int id)
         {
-            return _productsRepo.GetById(id);
+            return _productService.GetProductById(id);
         }
 
         [HttpPost("save")]
-        public Product SaveProduct([FromForm] ProductModel productModel)
+        public IActionResult SaveProduct([FromForm] ProductDto productDto)
         {
-            Product product = null;
-            if (productModel.Id > 0)
+            if (productDto == null) return BadRequest();
+            Product product = new Product();
+            product.Name = productDto.Name;
+            product.Price = productDto.Price;
+            product.Description = productDto.Description;
+            bool isSaved = _productService.SaveProduct(product);
+            if (isSaved)
             {
-                product = _productsRepo.GetById(productModel.Id);
-                if (product != null)
+                //
+                try
                 {
-                    product.Name = productModel.Name;
-                    product.Price = productModel.Price;
-                    product.ImageUrl = productModel.ImageUrl;
-                    product.Description = productModel.Description;
-                    try
+                    string directoryPath = _hostingEnv.WebRootPath + "\\uploads\\";
+                    if (!Directory.Exists(directoryPath))
                     {
-                        if (!Directory.Exists(_hostingEnv.WebRootPath + "\\uploads\\"))
-                        {
-                            Directory.CreateDirectory(_hostingEnv.WebRootPath + "\\uploads\\");
-                        }
-                        string savePath = _hostingEnv.WebRootPath + "\\uploads\\" + productModel.Image.FileName;
-                        using (FileStream filestream = System.IO.File.Create(savePath))
-                        {
-                            productModel.Image.CopyTo(filestream);
-                            filestream.Flush();
-                        }
+                        Directory.CreateDirectory(directoryPath);
                     }
-                    catch (Exception ex)
+                    string savePath = directoryPath + productDto.Image.FileName;
+                    using (FileStream filestream = System.IO.File.Create(savePath))
                     {
-
+                        productDto.Image.CopyTo(filestream);
+                        filestream.Flush();
                     }
                     //
-                    _productsRepo.Update(product);
+                    Picture picture = new Picture();
+                    picture.Name = productDto.Image.FileName;
+                    picture.ImageUrl = "\\uploads\\" + productDto.Image.FileName;
                     //
-                    return product;
+                    isSaved = _pictureService.SavePicture(picture);
+                    if (isSaved)
+                    {
+                        isSaved = _pictureService.AddProductPicture(product.Id, picture.Id);
+                    }
                 }
-            }
-            //
-            product = new Product();
-            product.Name = productModel.Name;
-            product.Price = productModel.Price;
-            product.ImageUrl = productModel.ImageUrl;
-            product.Description = productModel.Description;
-            //
-            try
-            {
-                if (!Directory.Exists(_hostingEnv.ContentRootPath + "\\uploads\\"))
+                catch (Exception ex)
                 {
-                    Directory.CreateDirectory(_hostingEnv.ContentRootPath + "\\uploads\\");
-                }
-                string savePath = _hostingEnv.ContentRootPath + "\\uploads\\" + productModel.Image.FileName;
-                using (FileStream filestream = System.IO.File.Create(savePath))
-                {
-                    productModel.Image.CopyTo(filestream);
-                    filestream.Flush();
-                }
-            }
-            catch (Exception ex)
-            {
 
+                }
             }
             //
-            _productsRepo.Insert(product);
-            //
-            return product;
+            return Ok(product);
         }
 
         [HttpGet("all")]
-        public List<ProductModel> GetProducts()
+        public async Task<IActionResult> GetProducts()
         {
-            return _productsRepo.Table.Select(x => new ProductModel()
+            var products = await _productService.GetProducts();
+            var response = products.Select(x => new ProductDto()
             {
                 Id = x.Id,
                 Name = x.Name,
                 Description = x.Description,
-                ImageUrl = x.ImageUrl
+                Price = x.Price,
+                ImageUrl = x.ProductPictureMappings.FirstOrDefault()?.Picture?.ImageUrl,
             }).ToList();
+            //
+            return Ok(response);
         }
 
     }

@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Dtos\**" />
-    <EmbeddedResource Remove="Dtos\**" />
-    <None Remove="Dtos\**" />
+    <Compile Remove="Dto\**" />
+    <EmbeddedResource Remove="Dto\**" />
+    <None Remove="Dto\**" />
   </ItemGroup>
 
   <ItemGroup>

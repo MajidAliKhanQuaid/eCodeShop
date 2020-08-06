@@ -1,11 +1,12 @@
-﻿using System;
+﻿using eCodeShop.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace eCodeShop.Core.Interfaces
 {
-    public partial interface IRepository<TEntity> where TEntity : class
+    public partial interface IRepository<TEntity> where TEntity : BaseEntity
     {
         #region Methods
 

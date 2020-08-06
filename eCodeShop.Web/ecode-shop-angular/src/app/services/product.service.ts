@@ -24,6 +24,7 @@ export class ProductService implements OnInit {
       return <Product[]>result
     }),
       catchError(err => {
+        console.log("Unable to load products");
         return [];
       }));
   }

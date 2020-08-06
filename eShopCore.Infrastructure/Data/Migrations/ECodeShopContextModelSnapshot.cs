@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using eShopCore.Infrastructure;
+using eShopCore.Infrastructure.Data;
 
 namespace eShopCore.Infrastructure.Data.Migrations
 {
@@ -18,6 +18,24 @@ namespace eShopCore.Infrastructure.Data.Migrations
                 .HasAnnotation("ProductVersion", "3.1.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("eCodeShop.Core.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
 
             modelBuilder.Entity("eCodeShop.Core.Entities.Order", b =>
                 {
@@ -76,6 +94,24 @@ namespace eShopCore.Infrastructure.Data.Migrations
                     b.ToTable("OrderItems");
                 });
 
+            modelBuilder.Entity("eCodeShop.Core.Entities.Picture", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pictures");
+                });
+
             modelBuilder.Entity("eCodeShop.Core.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -83,10 +119,10 @@ namespace eShopCore.Infrastructure.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -98,32 +134,71 @@ namespace eShopCore.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = -3,
-                            Description = "Apply Granny Smith",
-                            ImageUrl = "",
-                            Name = "Apple",
-                            Price = 12.44m
-                        },
-                        new
-                        {
-                            Id = -2,
-                            Description = "Mango From Multan",
-                            ImageUrl = "",
-                            Name = "Mango",
-                            Price = 14.44m
-                        },
-                        new
-                        {
-                            Id = -1,
-                            Description = "Orange From Peshawar",
-                            ImageUrl = "",
-                            Name = "Orange",
-                            Price = 155.44m
-                        });
+            modelBuilder.Entity("eCodeShop.Core.Entities.ProductCategoryMapping", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductCategoryMappings");
+                });
+
+            modelBuilder.Entity("eCodeShop.Core.Entities.ProductPictureMapping", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PictureId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PictureId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductPictureMappings");
+                });
+
+            modelBuilder.Entity("eCodeShop.Core.Entities.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("eCodeShop.Core.Entities.ShoppingCartItem", b =>
@@ -164,7 +239,16 @@ namespace eShopCore.Infrastructure.Data.Migrations
                     b.Property<DateTime>("CreatedOnUtc")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
@@ -185,18 +269,28 @@ namespace eShopCore.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = -1,
-                            CreatedOnUtc = new DateTime(2020, 8, 4, 5, 18, 33, 394, DateTimeKind.Utc).AddTicks(4206),
-                            Email = "user@ds.com",
-                            Password = "1234",
-                            Phone = "0092 123 123",
-                            UpdatedOnUtc = new DateTime(2020, 8, 4, 5, 18, 33, 394, DateTimeKind.Utc).AddTicks(4754),
-                            UserName = "ds"
-                        });
+            modelBuilder.Entity("eCodeShop.Core.Entities.UserRole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("eCodeShop.Core.Entities.Order", b =>
@@ -211,13 +305,43 @@ namespace eShopCore.Infrastructure.Data.Migrations
             modelBuilder.Entity("eCodeShop.Core.Entities.OrderItem", b =>
                 {
                     b.HasOne("eCodeShop.Core.Entities.Order", "Order")
-                        .WithMany()
+                        .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("eCodeShop.Core.Entities.Product", "Product")
                         .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("eCodeShop.Core.Entities.ProductCategoryMapping", b =>
+                {
+                    b.HasOne("eCodeShop.Core.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("eCodeShop.Core.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("eCodeShop.Core.Entities.ProductPictureMapping", b =>
+                {
+                    b.HasOne("eCodeShop.Core.Entities.Picture", "Picture")
+                        .WithMany()
+                        .HasForeignKey("PictureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("eCodeShop.Core.Entities.Product", "Product")
+                        .WithMany("ProductPictureMappings")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -232,7 +356,22 @@ namespace eShopCore.Infrastructure.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("eCodeShop.Core.Entities.User", "User")
+                        .WithMany("ShoppingCartItems")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("eCodeShop.Core.Entities.UserRole", b =>
+                {
+                    b.HasOne("eCodeShop.Core.Entities.Role", "Role")
                         .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("eCodeShop.Core.Entities.User", "User")
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

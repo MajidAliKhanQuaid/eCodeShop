@@ -2,6 +2,7 @@ import { API_URL } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import * as jwt_decode from "jwt-decode";
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,16 @@ export class AuthService {
     return localStorage.getItem('token') != null;
     // return localStorage.getItem('token') != null;
   };
+
+  getCurrentUser = (): any => {
+    if (this.isAuthenticated()) {
+      const token = localStorage.getItem('token');
+      if (token) {
+        return jwt_decode(token);
+      }
+    }
+    return null;
+  }
 
   getToken = (): string => {
     return localStorage.getItem('token');

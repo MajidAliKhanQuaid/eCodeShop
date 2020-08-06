@@ -26,7 +26,12 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 
 
 import { TokenInterceptor } from './interceptors/token-interceptor';
-import { ErrorInterceptor } from './interceptors/error-interceptor'
+import { ErrorInterceptor } from './interceptors/error-interceptor';
+import { AdminModule } from './views/admin/admin.module';
+// import { IndexComponent } from './views/admin/index/index.component';
+// import { ProductListComponent } from './views/admin/product-list/product-list.component';
+// import { CategoryListComponent } from './views/admin/category-list/category-list.component';
+// import { UserListComponent } from './views/admin/user-list/user-list.component';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, HomeComponent, LogoutComponent, ProductComponent, CreateorupdateComponent, ListComponent, CartComponent, NavbarComponent],
@@ -44,7 +49,8 @@ import { ErrorInterceptor } from './interceptors/error-interceptor'
     MatCardModule,
     MatToolbarModule,
     MatIconModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    AdminModule
   ],
   providers: [
     {

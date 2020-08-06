@@ -1,4 +1,5 @@
-﻿using eCodeShop.Core.Interfaces;
+﻿using eCodeShop.Core.Entities;
+using eCodeShop.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,9 @@ using System.Text;
 
 namespace eShopCore.Infrastructure.Data
 {
-    public class ECodeShopRepository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class ECodeShopRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
-        private DbContext _context;
+        private ECodeShopContext _context;
         private DbSet<TEntity> _entitySet;
 
         public IQueryable<TEntity> Table => EntitySet;
@@ -17,7 +18,7 @@ namespace eShopCore.Infrastructure.Data
 
         #region Ctor
 
-        public ECodeShopRepository(DbContext context)
+        public ECodeShopRepository(ECodeShopContext context)
         {
             _context = context;
             _entitySet = _context.Set<TEntity>();
