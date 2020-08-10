@@ -44,46 +44,53 @@ namespace eCodeShop.Api.Controllers
         [HttpPost("save")]
         public IActionResult SaveProduct([FromForm] ProductDto productDto)
         {
-            if (productDto == null) return BadRequest();
-            Product product = new Product();
-            product.Name = productDto.Name;
-            product.Price = productDto.Price;
-            product.Description = productDto.Description;
-            bool isSaved = _productService.SaveProduct(product);
-            if (isSaved)
+            try
             {
-                //
-                try
+                if (productDto == null) return BadRequest();
+                Product product = new Product();
+                product.Name = productDto.Name;
+                product.Price = productDto.Price;
+                product.Description = productDto.Description;
+                bool isSaved = _productService.SaveProduct(product);
+                if (isSaved)
                 {
-                    string directoryPath = _hostingEnv.WebRootPath + "\\uploads\\";
-                    if (!Directory.Exists(directoryPath))
-                    {
-                        Directory.CreateDirectory(directoryPath);
-                    }
-                    string savePath = directoryPath + productDto.Image.FileName;
-                    using (FileStream filestream = System.IO.File.Create(savePath))
-                    {
-                        productDto.Image.CopyTo(filestream);
-                        filestream.Flush();
-                    }
                     //
-                    Picture picture = new Picture();
-                    picture.Name = productDto.Image.FileName;
-                    picture.ImageUrl = "\\uploads\\" + productDto.Image.FileName;
-                    //
-                    isSaved = _pictureService.SavePicture(picture);
-                    if (isSaved)
+                    try
                     {
-                        isSaved = _pictureService.AddProductPicture(product.Id, picture.Id);
+                        string directoryPath = _hostingEnv.WebRootPath + "\\uploads\\";
+                        if (!Directory.Exists(directoryPath))
+                        {
+                            Directory.CreateDirectory(directoryPath);
+                        }
+                        string savePath = directoryPath + productDto.Image.FileName;
+                        using (FileStream filestream = System.IO.File.Create(savePath))
+                        {
+                            productDto.Image.CopyTo(filestream);
+                            filestream.Flush();
+                        }
+                        //
+                        Picture picture = new Picture();
+                        picture.Name = productDto.Image.FileName;
+                        picture.ImageUrl = "\\uploads\\" + productDto.Image.FileName;
+                        //
+                        isSaved = _pictureService.SavePicture(picture);
+                        if (isSaved)
+                        {
+                            isSaved = _pictureService.AddProductPicture(product.Id, picture.Id);
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
+                    catch (Exception ex)
+                    {
 
+                    }
                 }
+                //
+                return Ok(product);
             }
-            //
-            return Ok(product);
+            catch (Exception exp)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpGet("all")]

@@ -41,10 +41,10 @@ namespace eCodeShop.Web
             //{
 
             //});
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ecode-shop-angular/dist";
-            });
+            //services.AddSpaStaticFiles(configuration =>
+            //{
+            //    configuration.RootPath = "ecode-shop-angular/dist";
+            //});
 
             var jwtConfig = _configuration.GetSection("Jwt");
             var corsPolicyName = _configuration.GetValue<string>("CorsPolicyName");
@@ -102,7 +102,7 @@ namespace eCodeShop.Web
             app.UseCors(corsPolicyName);
 
             app.UseStaticFiles();
-            app.UseSpaStaticFiles();
+            //app.UseSpaStaticFiles();
 
             app.UseRouting();
 
@@ -127,18 +127,18 @@ namespace eCodeShop.Web
             });
 
 
-            app.UseSpa(spa =>
-            {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
+            //app.UseSpa(spa =>
+            //{
+            //    // To learn more about options for serving an Angular SPA from ASP.NET Core,
+            //    // see https://go.microsoft.com/fwlink/?linkid=864501
 
-                spa.Options.SourcePath = "ecode-shop-angular";
+            //    spa.Options.SourcePath = "ecode-shop-angular";
 
-                if (env.IsDevelopment())
-                {
-                    spa.UseAngularCliServer(npmScript: "start");
-                }
-            });
+            //    if (env.IsDevelopment())
+            //    {
+            //        spa.UseAngularCliServer(npmScript: "start");
+            //    }
+            //});
 
         }
     }
